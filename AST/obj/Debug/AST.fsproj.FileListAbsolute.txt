@@ -1,0 +1,24 @@
+C:\Users\Lada\Documents\projectJANE\Jane\AST\bin\Debug\AST.XML
+C:\Users\Lada\Documents\projectJANE\Jane\AST\bin\Debug\AST.exe
+C:\Users\Lada\Documents\projectJANE\Jane\AST\bin\Debug\AST.pdb
+C:\Users\Lada\Documents\projectJANE\Jane\AST\bin\Debug\FSharp.Core.dll
+C:\Users\Lada\Documents\projectJANE\Jane\AST\bin\Debug\FSharp.Core.xml
+C:\Users\Lada\Documents\projectJANE\Jane\AST\obj\Debug\AST.fsprojResolveAssemblyReference.cache
+C:\Users\Lada\Documents\projectJANE\Jane\AST\obj\Debug\AST.exe
+C:\Users\Lada\Documents\projectJANE\Jane\AST\obj\Debug\AST.pdb
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\bin\Debug\AST.XML
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\bin\Debug\AST.exe
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\bin\Debug\AST.pdb
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\bin\Debug\FSharp.Core.dll
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\bin\Debug\FSharp.Core.xml
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\obj\Debug\AST.fsprojResolveAssemblyReference.cache
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\obj\Debug\AST.exe
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Par\AST\obj\Debug\AST.pdb
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\bin\Debug\AST.XML
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\bin\Debug\AST.exe
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\bin\Debug\AST.pdb
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\bin\Debug\FSharp.Core.dll
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\bin\Debug\FSharp.Core.xml
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\obj\Debug\AST.fsprojResolveAssemblyReference.cache
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\obj\Debug\AST.exe
+C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\AST\obj\Debug\AST.pdb
