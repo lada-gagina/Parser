@@ -3,9 +3,14 @@ module Parser
 type token = 
   | PLUS
   | DOT
+  | LOG_OR
+  | LOG_AND
+  | INSTANCE_OF
   | END
   | O_SQR_BRACKET of (AST.Position)
   | C_SQR_BRACKET of (AST.Position)
+  | O_CUR_BRACKET of (AST.Position)
+  | C_CUR_BRACKET of (AST.Position)
   | O_BRACKET of (AST.Position)
   | C_BRACKET of (AST.Position)
   | COMMA of (AST.Position)
@@ -25,9 +30,14 @@ type token =
 type tokenId = 
     | TOKEN_PLUS
     | TOKEN_DOT
+    | TOKEN_LOG_OR
+    | TOKEN_LOG_AND
+    | TOKEN_INSTANCE_OF
     | TOKEN_END
     | TOKEN_O_SQR_BRACKET
     | TOKEN_C_SQR_BRACKET
+    | TOKEN_O_CUR_BRACKET
+    | TOKEN_C_CUR_BRACKET
     | TOKEN_O_BRACKET
     | TOKEN_C_BRACKET
     | TOKEN_COMMA
@@ -49,7 +59,15 @@ type tokenId =
 type nonTerminalId = 
     | NONTERM__startstart
     | NONTERM_start
+    | NONTERM_Initializer
+    | NONTERM_ArrayInitializer
+    | NONTERM_ArrayInitializerRest
     | NONTERM_Expression
+    | NONTERM_ExprOr
+    | NONTERM_ExprAnd
+    | NONTERM_ExprInstanceOf
+    | NONTERM_Type
+    | NONTERM_Dimension
     | NONTERM_ExprCompareOp
     | NONTERM_ExprTermRest
     | NONTERM_ExprAddOrSubOp
@@ -81,4 +99,4 @@ val prodIdxToNonTerminal: int -> nonTerminalId
 
 /// This function gets the name of a token as a string
 val token_to_string: token -> string
-val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (AST.Expression) 
+val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (AST.Initializer) 

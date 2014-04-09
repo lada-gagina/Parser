@@ -54,5 +54,15 @@ let lexemeToBinaryOperator lexbuf =
     | "-"  -> SUBSTRACTION
     |  _   -> failwith "incorrect binary operator!"
 
-//let lexemeToType lexbuf =
-//    match
+let createType name dimension position =
+    match name with
+    | "byte"    -> new ByteType(dimension, position)         :> Type
+    | "short"   -> new ShortType(dimension, position)        :> Type
+    | "int"     -> new IntType(dimension, position)          :> Type
+    | "long"    -> new LongType(dimension, position)         :> Type
+    | "float"   -> new FloatType(dimension, position)        :> Type
+    | "double"  -> new DoubleType(dimension, position)       :> Type
+    | "char"    -> new CharType(dimension, position)         :> Type
+    | "string"  -> new StringType(dimension, position)       :> Type
+    | "boolean" -> new BooleanType(dimension, position)      :> Type
+    |  _        -> new CustomType(name, dimension, position) :> Type

@@ -6,7 +6,7 @@ open SupportingFunctions
 %}
 
 %start start
-%type  <AST.Expression> start
+%type  <AST.Initializer> start
 %token <AST.ID> IDENT
 %token <AST.StringLiteral> STRING 
 %token <AST.IntegerLiteral> INT
@@ -15,20 +15,45 @@ open SupportingFunctions
 %token <AST.CharLiteral> CHAR
 %token <AST.NullLiteral> NULL
 %token <AST.BinaryOperator> FACTOR COMPARE LOGICAL
-%token <AST.Position> O_SQR_BRACKET C_SQR_BRACKET O_BRACKET C_BRACKET COMMA NEW EXCL_MARK HYPHEN
-%token PLUS DOT END 
+%token <AST.Position> O_SQR_BRACKET C_SQR_BRACKET O_CUR_BRACKET C_CUR_BRACKET O_BRACKET C_BRACKET COMMA NEW EXCL_MARK HYPHEN
+%token PLUS DOT LOG_OR LOG_AND INSTANCE_OF END 
 
 %%
 
-start : Expression END { $1 }
+start : Initializer END { $1 }
 
-Expression : ExprCompareOp { $1 }
+Initializer : Expression       { $1 :> Initializer }
+			| ArrayInitializer { $1 :> Initializer }
+
+ArrayInitializer : O_CUR_BRACKET C_CUR_BRACKET             { new ArrayInitializer([], commonPosition $1 $2) :> Initializer }
+				 | O_CUR_BRACKET Initializer C_CUR_BRACKET { new ArrayInitializer([$2], commonPosition $1 $3) :> Initializer }
+				 | O_CUR_BRACKET Initializer ArrayInitializerRest C_CUR_BRACKET { new ArrayInitializer($2 :: $3, commonPosition $1 $4) :> Initializer }
+
+ArrayInitializerRest : COMMA Initializer ArrayInitializerRest  { $2 :: $3 }
+		             | COMMA Initializer                       { [$2] }
+
+Expression : ExprOr { $1 }
+
+ExprOr : ExprAnd LOG_OR ExprOr { new BinaryOperation($1, OR, $3, commonPosition $1.Position $3.Position) :> Expression }
+	   | ExprAnd               { $1 }
+
+ExprAnd : ExprInstanceOf LOG_AND ExprAnd { new BinaryOperation($1, AND, $3, commonPosition $1.Position $3.Position) :> Expression }
+		| ExprInstanceOf                 { $1 }
+
+ExprInstanceOf : ExprCompareOp INSTANCE_OF Type { new InstanceOf($1, $3, commonPosition $1.Position $3.Position) :> Expression}
+			   | ExprCompareOp                  { $1 }
+
+Type : IDENT           { createType $1.Value 0 $1.Position }
+	 | IDENT Dimension { createType $1.Value (fst $2) (commonPosition $1.Position (snd $2)) }
+
+Dimension : O_SQR_BRACKET C_SQR_BRACKET           { 1, $2 }
+		  | O_SQR_BRACKET C_SQR_BRACKET Dimension { fst $3 + 1, snd $3}
 
 ExprCompareOp : ExprTermOp COMPARE ExprTermOp { new BinaryOperation($1, $2, $3, commonPosition $1.Position $3.Position) :> Expression }
-			  | ExprTermOp { $1 }
+			  | ExprTermOp                    { $1 }
 
 ExprTermRest : ExprAddOrSubOp ExprFactorOp ExprTermRest { ($1, $2) :: $3 }
-			 | ExprAddOrSubOp ExprFactorOp { [($1, $2)] }
+			 | ExprAddOrSubOp ExprFactorOp              { [($1, $2)] }
 
 ExprAddOrSubOp : PLUS   { ADDITION }
                | HYPHEN { SUBSTRACTION }

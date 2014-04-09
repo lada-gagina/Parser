@@ -43,7 +43,13 @@ let hyphen         = [ '-' ]
 let dot            = [ '.' ]
 let factor         = [ '*' '/' '%' ]
 let compare        = [ '>' '<' ] | ">=" | "<=" | "==" | "!="
-let logical        = "||" | "&&" 
+let logOr          = "||"
+let logAnd         = "&&"
+
+let instanceOf     = "instanceOf"
+
+let oCurBracket    = [ '{' ]
+let cCurBracket    = [ '}' ]
 
  
 rule tokenize = parse
@@ -56,6 +62,7 @@ rule tokenize = parse
 | float                     { FLOAT (getFloatLiteral lexbuf) }
 
 | new                       { NEW (getPos lexbuf) }
+| instanceOf                { INSTANCE_OF } 
 
 | identifier                { IDENT (getId lexbuf) }
 
@@ -72,6 +79,10 @@ rule tokenize = parse
 | dot                       { DOT }
 | factor                    { FACTOR (lexemeToBinaryOperator lexbuf) }
 | compare                   { COMPARE (lexemeToBinaryOperator lexbuf) }
-| logical                   { LOGICAL (lexemeToBinaryOperator lexbuf) }
+| logOr                     { LOG_OR }
+| logAnd                    { LOG_AND } 
+
+| oCurBracket               { O_CUR_BRACKET (getPos lexbuf) }
+| cCurBracket               { C_CUR_BRACKET (getPos lexbuf) }
 
 | eof						{ END }
