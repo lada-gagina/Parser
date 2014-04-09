@@ -41,15 +41,14 @@
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
   <Import Project="$(MSBuildExtensionsPath32)\FSharp\1.0\FSharp.PowerPack.Targets" />
   <ItemGroup>
-    <Compile Include="Position.fs" />
     <Compile Include="ParseLiteral.fs" />
+    <Compile Include="SupportingFunctions.fs" />
     <FsYacc Include="Parser.fsy">
       <OtherFlags>--module Parser</OtherFlags>
     </FsYacc>
     <FsLex Include="Lexer.fsl">
       <OtherFlags>--unicode</OtherFlags>
     </FsLex>
-    <Compile Include="Statements.fs" />
     <None Include="App.config" />
     <None Include="packages.config" />
     <Compile Include="Parser.fsi" />

@@ -18,3 +18,23 @@ C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\Parser\bin\Debug\FSha
 C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\Parser\obj\Debug\Parser.fsprojResolveAssemblyReference.cache
 C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\Parser\obj\Debug\Par.dll
 C:\Users\Lada\Documents\Visual Studio 2012\Projects\Parser\Parser\obj\Debug\Par.pdb
+C:\Users\Lada\Documents\Parser\Parser\obj\Debug\Parser.fsprojResolveAssemblyReference.cache
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\Par.dll.config
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\Par.XML
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\Par.dll
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\Par.pdb
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\AST.exe
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.Core.dll
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.dll
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.Linq.dll
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.Metadata.dll
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.Parallel.Seq.dll
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\AST.pdb
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\AST.xml
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.xml
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.Linq.xml
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.Metadata.xml
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.PowerPack.Parallel.Seq.xml
+C:\Users\Lada\Documents\Parser\Parser\bin\Debug\FSharp.Core.xml
+C:\Users\Lada\Documents\Parser\Parser\obj\Debug\Par.dll
+C:\Users\Lada\Documents\Parser\Parser\obj\Debug\Par.pdb

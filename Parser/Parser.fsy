@@ -2,21 +2,49 @@
 open System
 open Microsoft.FSharp.Collections
 open AST
-open Position
+open SupportingFunctions
 %}
 
 %start start
 %type  <AST.Expression> start
-%token <string> STRING ID
-%token <int64> INT
-%token <float> FLOAT
-%token <bool> BOOLEAN
-%token <char> CHAR
-%token O_SQR_BRACKET C_SQR_BRACKET O_BRACKET C_BRACKET DOT COMMA NULL NEW END 
+%token <AST.ID> IDENT
+%token <AST.StringLiteral> STRING 
+%token <AST.IntegerLiteral> INT
+%token <AST.FloatLiteral> FLOAT
+%token <AST.BooleanLiteral> BOOLEAN
+%token <AST.CharLiteral> CHAR
+%token <AST.NullLiteral> NULL
+%token <AST.BinaryOperator> FACTOR COMPARE LOGICAL
+%token <AST.Position> O_SQR_BRACKET C_SQR_BRACKET O_BRACKET C_BRACKET COMMA NEW EXCL_MARK HYPHEN
+%token PLUS DOT END 
 
 %%
 
 start : Expression END { $1 }
+
+Expression : ExprCompareOp { $1 }
+
+ExprCompareOp : ExprTermOp COMPARE ExprTermOp { new BinaryOperation($1, $2, $3, commonPosition $1.Position $3.Position) :> Expression }
+			  | ExprTermOp { $1 }
+
+ExprTermRest : ExprAddOrSubOp ExprFactorOp ExprTermRest { ($1, $2) :: $3 }
+			 | ExprAddOrSubOp ExprFactorOp { [($1, $2)] }
+
+ExprAddOrSubOp : PLUS   { ADDITION }
+               | HYPHEN { SUBSTRACTION }
+
+ExprTermOp : ExprFactorOp ExprTermRest { List.fold (fun acc (op, x) -> new BinaryOperation(acc, op, x, commonPosition acc.Position x.Position) :> Expression) $1 $2 }
+		   | ExprFactorOp { $1 }
+
+ExprFactorRest : FACTOR ExprUnaryOp ExprFactorRest { ($1, $2) :: $3 }
+			   | FACTOR ExprUnaryOp { [($1, $2)] }
+
+ExprFactorOp : ExprUnaryOp ExprFactorRest { List.fold (fun acc (op, x) -> new BinaryOperation(acc, op, x, commonPosition acc.Position x.Position) :> Expression) $1 $2 }
+			 | ExprUnaryOp { $1 }
+
+ExprUnaryOp : EXCL_MARK ExprMemberCall { new UnaryOperation(NOT, $2, commonPosition $1 $2.Position) :> Expression }
+			| HYPHEN ExprMemberCall     { new UnaryOperation(MINUS, $2, commonPosition $1 $2.Position) :> Expression }
+		    | ExprMemberCall           { $1 }
 
 IdOrMember : Identifier { $1 :> Expression }
 		   | Member     { $1 :> Expression }
@@ -24,40 +52,38 @@ IdOrMember : Identifier { $1 :> Expression }
 ExprMemberCallRest : DOT IdOrMember ExprMemberCallRest { $2 :: $3 }
 				   | DOT IdOrMember                    { [$2] }
 
-ExprMemberCall : PrimaryExpr ExprMemberCallRest { List.fold (fun acc x -> new BinaryOperation(acc, MEMBER_CALL, x, pos) :> Expression) $1 $2 }
+ExprMemberCall : PrimaryExpr ExprMemberCallRest { List.fold (fun acc x -> new BinaryOperation(acc, MEMBER_CALL, x, commonPosition acc.Position x.Position) :> Expression) $1 $2 }
 			   | PrimaryExpr                    { $1 } 
 
-Expression : ExprMemberCall { $1 }
-
 PrimaryExpr : Primary                        { $1 :> Expression}
-		    | O_BRACKET Expression C_BRACKET { $2 }
+		    | O_BRACKET Expression C_BRACKET { $2.Position <- commonPosition $1 $3; $2 }
 
 Primary : Literal                        { $1 :> Primary }
 		| Constructor                    { $1 :> Primary }
 		| Member                         { $1 :> Primary }
 		| Identifier                     { $1 :> Primary }
 
-Identifier : ID { new Identifier($1, pos) }
+Identifier : IDENT { new Identifier($1) }
 
-Constructor : NEW ID Arguments { new Constructor($2, $3, pos) }
+Constructor : NEW IDENT Arguments { new Constructor($2, $3, commonPosition $1 $3.Position) }
 
-Member : ID Suffix { new Member($1, $2, pos) }
+Member : IDENT Suffix { new Member($1, $2, commonPosition $1.Position $2.Position) }
 
 Suffix : ArrayElement { $1 :> Suffix }
 	   | Arguments    { $1 :> Suffix }
 
-ArrayElement : O_SQR_BRACKET Expression C_SQR_BRACKET { new ArrayElement($2, pos) }
+ArrayElement : O_SQR_BRACKET Expression C_SQR_BRACKET { new ArrayElement($2, commonPosition $1 $3) }
 
-Arguments : O_BRACKET C_BRACKET            { new Arguments([], pos) }
-		  | O_BRACKET Expression C_BRACKET { new Arguments([$2], pos) }
-		  | O_BRACKET Expression ArgsRest  { new Arguments($2 :: $3, pos) }
+Arguments : O_BRACKET C_BRACKET            { new Arguments([], commonPosition $1 $2) }
+		  | O_BRACKET Expression C_BRACKET { new Arguments([$2], commonPosition $1 $3) }
+		  | O_BRACKET Expression ArgsRest C_BRACKET { new Arguments($2 :: $3, commonPosition $1 $4) }
 
 ArgsRest : COMMA Expression ArgsRest  { $2 :: $3 }
-		 | COMMA Expression C_BRACKET { [$2] }
+		 | COMMA Expression { [$2] }
 
-Literal : INT     { new IntegerLiteral($1, pos) :> Literal }
-	    | FLOAT   { new FloatLiteral($1, pos) :> Literal } 
-	    | NULL    { new NullLiteral(pos) :> Literal }
-	    | CHAR    { new CharLiteral($1, pos) :> Literal }
-	    | BOOLEAN { new BooleanLiteral($1, pos) :> Literal }
-	    | STRING  { new StringLiteral($1, pos) :> Literal }
+Literal : INT     { $1 :> Literal }
+	    | FLOAT   { $1 :> Literal } 
+	    | NULL    { $1 :> Literal }
+	    | CHAR    { $1 :> Literal }
+	    | BOOLEAN { $1 :> Literal }
+	    | STRING  { $1 :> Literal }
