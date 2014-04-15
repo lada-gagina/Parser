@@ -6,6 +6,7 @@ type token =
   | LOG_OR
   | LOG_AND
   | INSTANCE_OF
+  | EQUAL_SIGN
   | END
   | O_SQR_BRACKET of (AST.Position)
   | C_SQR_BRACKET of (AST.Position)
@@ -14,7 +15,16 @@ type token =
   | O_BRACKET of (AST.Position)
   | C_BRACKET of (AST.Position)
   | COMMA of (AST.Position)
+  | SEMICOLON of (AST.Position)
   | NEW of (AST.Position)
+  | SUPER of (AST.Position)
+  | RETURN of (AST.Position)
+  | CONTINUE of (AST.Position)
+  | BREAK of (AST.Position)
+  | WHILE of (AST.Position)
+  | FOR of (AST.Position)
+  | IF of (AST.Position)
+  | ELSE of (AST.Position)
   | EXCL_MARK of (AST.Position)
   | HYPHEN of (AST.Position)
   | FACTOR of (AST.BinaryOperator)
@@ -33,6 +43,7 @@ type tokenId =
     | TOKEN_LOG_OR
     | TOKEN_LOG_AND
     | TOKEN_INSTANCE_OF
+    | TOKEN_EQUAL_SIGN
     | TOKEN_END
     | TOKEN_O_SQR_BRACKET
     | TOKEN_C_SQR_BRACKET
@@ -41,7 +52,16 @@ type tokenId =
     | TOKEN_O_BRACKET
     | TOKEN_C_BRACKET
     | TOKEN_COMMA
+    | TOKEN_SEMICOLON
     | TOKEN_NEW
+    | TOKEN_SUPER
+    | TOKEN_RETURN
+    | TOKEN_CONTINUE
+    | TOKEN_BREAK
+    | TOKEN_WHILE
+    | TOKEN_FOR
+    | TOKEN_IF
+    | TOKEN_ELSE
     | TOKEN_EXCL_MARK
     | TOKEN_HYPHEN
     | TOKEN_FACTOR
@@ -59,6 +79,17 @@ type tokenId =
 type nonTerminalId = 
     | NONTERM__startstart
     | NONTERM_start
+    | NONTERM_Statement
+    | NONTERM_StartMemberCallOrAssignment
+    | NONTERM_MemberCallStatement
+    | NONTERM_Assignment
+    | NONTERM_Declaration
+    | NONTERM_WhileStatement
+    | NONTERM_IfStatement
+    | NONTERM_BreakStatement
+    | NONTERM_ContinueStatement
+    | NONTERM_ReturnStatement
+    | NONTERM_SuperStatement
     | NONTERM_Initializer
     | NONTERM_ArrayInitializer
     | NONTERM_ArrayInitializerRest
@@ -99,4 +130,4 @@ val prodIdxToNonTerminal: int -> nonTerminalId
 
 /// This function gets the name of a token as a string
 val token_to_string: token -> string
-val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (AST.Initializer) 
+val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (AST.Statement) 

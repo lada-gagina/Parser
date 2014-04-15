@@ -28,12 +28,12 @@ type DeclarationStatement(declarationType : Type, name : ID, body : Initializer,
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-type AssignmentStatement(path : string list, body : Initializer, pos : Position) =
+type AssignmentStatement(path : Expression, body : Initializer, pos : Position) =
     inherit Statement(pos)
     member x.Path = path
     member x.Body = body
 
-    override x.ToString() = sprintf "%s = %A;\n" (String.concat "." path) body
+    override x.ToString() = sprintf "%s = %A;\n" (path.ToString()) body
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -76,7 +76,7 @@ type ForStatement(init : DeclarationStatement, condition : Expression,
     member x.Body      = body
 
     override x.ToString() = sprintf "for (%A %A = %A; %A; %s = %A) %A" init.Type init.Name init.Body 
-                                    condition (String.concat "." update.Path) update.Body body
+                                    condition (update.ToString()) update.Body body
                             
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

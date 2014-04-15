@@ -12,6 +12,14 @@ let whitespace     = [ ' ' '\t' '\r' '\n' ]
 
 let null           = "null"
 let new            = "new"
+let super          = "super"
+let return         = "return"
+let continue       = "continue"
+let break          = "break"
+let while          = "while"
+let for            = "for"
+let if             = "if"
+let else           = "else"
 
 let digit          = ['0'-'9']
 let int            = digit+
@@ -51,6 +59,9 @@ let instanceOf     = "instanceOf"
 let oCurBracket    = [ '{' ]
 let cCurBracket    = [ '}' ]
 
+let semicolon      = [ ';' ]
+let equalSign      = [ '=' ]
+
  
 rule tokenize = parse
 | whitespace				{ tokenize lexbuf }
@@ -62,7 +73,15 @@ rule tokenize = parse
 | float                     { FLOAT (getFloatLiteral lexbuf) }
 
 | new                       { NEW (getPos lexbuf) }
-| instanceOf                { INSTANCE_OF } 
+| instanceOf                { INSTANCE_OF }
+| super                     { SUPER (getPos lexbuf) } 
+| return                    { RETURN (getPos lexbuf) }
+| continue                  { CONTINUE (getPos lexbuf) }
+| break                     { BREAK (getPos lexbuf) }
+| while                     { WHILE (getPos lexbuf) }
+| for                       { FOR (getPos lexbuf) }
+| if                        { IF (getPos lexbuf) }
+| else                      { ELSE (getPos lexbuf) }
 
 | identifier                { IDENT (getId lexbuf) }
 
@@ -72,6 +91,8 @@ rule tokenize = parse
 | oBracket                  { O_BRACKET (getPos lexbuf) }
 | cBracket                  { C_BRACKET (getPos lexbuf) }
 | comma                     { COMMA (getPos lexbuf) } 
+| semicolon                 { SEMICOLON (getPos lexbuf) }
+| equalSign                 { EQUAL_SIGN }
 
 | exclMark                  { EXCL_MARK (getPos lexbuf) }
 | hyphen                    { HYPHEN (getPos lexbuf) }
